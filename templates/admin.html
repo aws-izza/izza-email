@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Admin Page</h1>
+    <h2>Add New Row</h2>
+    <form action="/admin/add" method="post" enctype="multipart/form-data">
+        <label for="sido">시도:</label><br>
+        <input type="text" id="sido" name="sido"><br>
+        <label for="sigungu">시군구:</label><br>
+        <input type="text" id="sigungu" name="sigungu"><br>
+        <label for="yuhyeong">유형:</label><br>
+        <input type="text" id="yuhyeong" name="yuhyeong"><br>
+        <label for="danji_name">단지명:</label><br>
+        <input type="text" id="danji_name" name="danji_name"><br>
+        <label for="gosi_date">고시일자:</label><br>
+        <input type="text" id="gosi_date" name="gosi_date"><br>
+        <label for="gosi_number">고시번호:</label><br>
+        <input type="text" id="gosi_number" name="gosi_number"><br>
+        <label for="gosi_name">고시명:</label><br>
+        <input type="text" id="gosi_name" name="gosi_name"><br>
+        <label for="pdf">PDF:</label><br>
+        <input type="file" id="pdf" name="pdf"><br><br>
+        <input type="submit" value="Add Row">
+    </form>
+
+    <h2>Current Data</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>시도</th>
+                <th>시군구</th>
+                <th>유형</th>
+                <th>단지명</th>
+                <th>고시일자</th>
+                <th>고시번호</th>
+                <th>고시명</th>
+                <th>pdf</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row.sido }}</td>
+                <td>{{ row.sigungu }}</td>
+                <td>{{ row.yuhyeong }}</td>
+                <td>{{ row.danji_name }}</td>
+                <td>{{ row.gosi_date }}</td>
+                <td>{{ row.gosi_number }}</td>
+                <td>{{ row.gosi_name }}</td>
+                <td><a href="/download/{{ row.pdf }}" download>{{ row.pdf }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

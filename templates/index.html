@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Data Table</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>시도</th>
+                <th>시군구</th>
+                <th>유형</th>
+                <th>단지명</th>
+                <th>고시일자</th>
+                <th>고시번호</th>
+                <th>고시명</th>
+                <th>pdf</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row.sido }}</td>
+                <td>{{ row.sigungu }}</td>
+                <td>{{ row.yuhyeong }}</td>
+                <td>{{ row.danji_name }}</td>
+                <td>{{ row.gosi_date }}</td>
+                <td>{{ row.gosi_number }}</td>
+                <td>{{ row.gosi_name }}</td>
+                <td><a href="/download/{{ row.pdf }}" download>{{ row.pdf }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
