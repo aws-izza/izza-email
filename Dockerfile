@@ -15,4 +15,4 @@ COPY src/ .
 EXPOSE 8000
 
 # 6. Define the command to run the application
-CMD ["python", "run_server.py"]
+CMD ["python", "main.py"]
