@@ -123,7 +123,7 @@ spec:
                             sh """
                                 rm -rf environments/email/email-deployment.yaml
                                 cp ../deployment/email-deployment.yaml environments/email/email-deployment.yaml
-                                sed -i 's|image: .*|image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}|' environments/app/report/ai-report.yaml
+                                sed -i 's|image: .*|image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}|' environments/email/email-deployment.yaml
                             """
                             
                             sh """
