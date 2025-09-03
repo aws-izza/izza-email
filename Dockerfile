@@ -3,7 +3,7 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Copy and install requirements from the src directory
-COPY src/requirements.txt .
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application source from the src directory
