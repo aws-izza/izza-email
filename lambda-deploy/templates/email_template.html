@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,12 +15,14 @@
             padding: 20px;
             background-color: #f5f5f5;
         }
+
         .container {
             background-color: white;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+
         .header {
             background-color: #2c5aa0;
             color: white;
@@ -28,10 +31,12 @@
             margin-bottom: 20px;
             text-align: center;
         }
+
         .header h1 {
             margin: 0;
             font-size: 24px;
         }
+
         .notice-info {
             background-color: #f8f9fa;
             padding: 20px;
@@ -39,25 +44,46 @@
             margin-bottom: 20px;
             border-left: 4px solid #2c5aa0;
         }
+
         .notice-info h2 {
             color: #2c5aa0;
             margin-top: 0;
             font-size: 18px;
         }
+
         .info-grid {
             display: grid;
             grid-template-columns: 1fr 2fr;
             gap: 10px;
             margin-bottom: 15px;
         }
+
         .info-label {
             font-weight: bold;
             color: #555;
         }
+
         .analysis {
             margin: 20px 0;
-            white-space: pre-line;
+            line-height: 1.6;
         }
+
+        .analysis h2 {
+            color: #2c5aa0;
+            font-size: 16px;
+            margin: 20px 0 10px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .analysis h2:first-child {
+            margin-top: 0;
+        }
+
+        .analysis p {
+            margin: 10px 0;
+        }
+
         .footer {
             background-color: #f8f9fa;
             padding: 15px;
@@ -66,6 +92,7 @@
             font-size: 14px;
             color: #666;
         }
+
         .pdf-link {
             display: inline-block;
             background-color: #dc3545;
@@ -75,47 +102,51 @@
             border-radius: 4px;
             margin-top: 10px;
         }
+
         .pdf-link:hover {
             background-color: #c82333;
         }
+
         @media (max-width: 600px) {
             .info-grid {
                 grid-template-columns: 1fr;
             }
+
             .container {
                 padding: 15px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
             <h1>📰 산업단지 뉴스레터</h1>
             <p>{{ notice_data.고시일자 }}자</p>
         </div>
-        
+
         <div class="notice-info">
             <h2>📌 주요 고시 내용</h2>
             <div class="info-grid">
                 <div class="info-label">지역:</div>
                 <div>{{ notice_data.시도 }} {{ notice_data.시군구 }}</div>
-                
+
                 <div class="info-label">유형:</div>
                 <div>{{ notice_data.유형 }}</div>
-                
+
                 <div class="info-label">단지명:</div>
                 <div>{{ notice_data.단지명 }}</div>
-                
+
                 <div class="info-label">고시명:</div>
                 <div>{{ notice_data.고시명 }}</div>
             </div>
         </div>
-        
+
         <div class="analysis">
-            {{ analyzed_content }}
+            {{ analyzed_content|safe }}
         </div>
-        
+
         <div class="footer">
             <h3>📄 참고 정보</h3>
             <p><strong>고시일자:</strong> {{ notice_data.고시일자 }}</p>
@@ -128,4 +159,5 @@
         </div>
     </div>
 </body>
+
 </html>

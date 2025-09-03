@@ -229,17 +229,56 @@ def analyze_with_bedrock(notice_data, pdf_content=None):
 
 def generate_fallback_analysis(notice_data):
     """Bedrock 분석이 실패한 경우 기본 분석 결과를 생성합니다."""
-    return f"""
-    🔎 분석 및 시사점
-    이번 고시는 {notice_data.get('단지명')} 관련 {notice_data.get('고시명')}입니다.
-    {notice_data.get('시도')} {notice_data.get('시군구')} 지역의 {notice_data.get('유형')} 관련 중요한 발표로,
-    해당 지역의 산업 발전과 기업 활동에 영향을 미칠 것으로 예상됩니다.
-    
-    💡 잠재적 기회
-    - 입주 기업: 새로운 투자 및 입주 기회 검토 필요
-    - 건설·엔지니어링사: 관련 프로젝트 발주 가능성
-    - 투자자: 지역 개발 계획 기반 투자 기회
-    """
+    return f"""## 🔍 고시 개요
+이번 고시는 {notice_data.get('단지명')} 관련 {notice_data.get('고시명')}입니다.
+{notice_data.get('시도')} {notice_data.get('시군구')} 지역의 {notice_data.get('유형')} 관련 중요한 발표로, 해당 지역의 산업 발전과 기업 활동에 영향을 미칠 것으로 예상됩니다.
+
+## 📊 주요 변경사항
+- 고시일자: {notice_data.get('고시일자')}
+- 고시번호: {notice_data.get('고시번호')}
+- 해당 지역: {notice_data.get('시도')} {notice_data.get('시군구')}
+
+## 💼 비즈니스 영향
+해당 지역의 {notice_data.get('유형')} 관련 사업에 직접적인 영향을 미칠 것으로 예상되며, 관련 기업들의 사업 계획 수립에 중요한 참고 자료가 될 것입니다.
+
+## 🎯 잠재적 기회
+- 입주 기업: 새로운 투자 및 입주 기회 검토 필요
+- 건설·엔지니어링사: 관련 프로젝트 발주 가능성
+- 투자자: 지역 개발 계획 기반 투자 기회
+
+## ⚠️ 주의사항
+정확한 내용은 원본 고시 문서를 반드시 확인하시기 바라며, 관련 법규 및 절차를 준수하여 진행하시기 바랍니다."""
+
+def format_analyzed_content(analyzed_content):
+    """분석 내용의 마크다운 헤딩을 HTML로 변환합니다."""
+    try:
+        import re
+        
+        # ## 헤딩을 <h2> 태그로 변환
+        formatted_content = re.sub(r'^## (.+)$', r'<h2>\1</h2>', analyzed_content, flags=re.MULTILINE)
+        
+        # 줄바꿈을 <br> 태그로 변환 (단, <h2> 태그 주변은 제외)
+        lines = formatted_content.split('\n')
+        processed_lines = []
+        
+        for i, line in enumerate(lines):
+            if line.strip():
+                if line.startswith('<h2>'):
+                    processed_lines.append(line)
+                else:
+                    processed_lines.append(line)
+            else:
+                # 빈 줄은 <br>로 변환하되, 헤딩 앞뒤는 제외
+                if (i > 0 and i < len(lines) - 1 and 
+                    not lines[i-1].startswith('<h2>') and 
+                    not lines[i+1].startswith('<h2>')):
+                    processed_lines.append('<br>')
+        
+        return '\n'.join(processed_lines)
+        
+    except Exception as e:
+        logger.error(f"분석 내용 포맷팅 실패: {str(e)}")
+        return analyzed_content
 
 def generate_html_email(notice_data, analyzed_content):
     """Jinja2를 사용하여 HTML 이메일을 생성합니다."""
@@ -248,10 +287,13 @@ def generate_html_email(notice_data, analyzed_content):
         with open('templates/email_template.html', 'r', encoding='utf-8') as f:
             template_str = f.read()
         
+        # 분석 내용을 HTML 형식으로 포맷팅
+        formatted_analyzed_content = format_analyzed_content(analyzed_content)
+        
         template = Template(template_str)
         html_content = template.render(
             notice_data=notice_data,
-            analyzed_content=analyzed_content,
+            analyzed_content=formatted_analyzed_content,
             base_url=config.SOURCE_URL
         )
         
