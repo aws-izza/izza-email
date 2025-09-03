@@ -1,13 +1,8 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: email-services
----
-apiVersion: v1
 kind: Secret
 metadata:
   name: mariadb-secret
-  namespace: email-services
+  namespace: app
 type: Opaque
 stringData:
   # IMPORTANT: Replace "YOUR_STRONG_PASSWORD" with a strong, secure password.
@@ -17,7 +12,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mariadb-pvc
-  namespace: email-services
+  namespace: app
 spec:
   accessModes:
     - ReadWriteOnce
@@ -31,7 +26,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mariadb
-  namespace: email-services
+  namespace: app
 spec:
   serviceName: "mariadb"
   replicas: 1
@@ -71,7 +66,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mariadb-nlb-service
-  namespace: email-services
+  namespace: app
   annotations:
     # This annotation specifies that you want an NLB.
     service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
