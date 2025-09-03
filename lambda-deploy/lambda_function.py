@@ -250,29 +250,53 @@ def generate_fallback_analysis(notice_data):
 정확한 내용은 원본 고시 문서를 반드시 확인하시기 바라며, 관련 법규 및 절차를 준수하여 진행하시기 바랍니다."""
 
 def format_analyzed_content(analyzed_content):
-    """분석 내용의 마크다운 헤딩을 HTML로 변환합니다."""
+    """분석 내용의 마크다운 헤딩과 리스트를 HTML로 변환합니다."""
     try:
         import re
         
         # ## 헤딩을 <h2> 태그로 변환
         formatted_content = re.sub(r'^## (.+)$', r'<h2>\1</h2>', analyzed_content, flags=re.MULTILINE)
         
-        # 줄바꿈을 <br> 태그로 변환 (단, <h2> 태그 주변은 제외)
         lines = formatted_content.split('\n')
         processed_lines = []
+        in_list = False
         
         for i, line in enumerate(lines):
-            if line.strip():
-                if line.startswith('<h2>'):
-                    processed_lines.append(line)
-                else:
-                    processed_lines.append(line)
+            stripped_line = line.strip()
+            
+            if not stripped_line:
+                # 빈 줄 처리
+                if in_list:
+                    processed_lines.append('</ul>')
+                    in_list = False
+                processed_lines.append('')
+                continue
+            
+            if stripped_line.startswith('<h2>'):
+                # 헤딩 처리 - 리스트가 열려있으면 닫기
+                if in_list:
+                    processed_lines.append('</ul>')
+                    in_list = False
+                processed_lines.append(stripped_line)
+                
+            elif stripped_line.startswith('- '):
+                # 리스트 아이템 처리
+                if not in_list:
+                    processed_lines.append('<ul>')
+                    in_list = True
+                list_item = stripped_line[2:].strip()  # '- ' 제거
+                processed_lines.append(f'<li>{list_item}</li>')
+                
             else:
-                # 빈 줄은 <br>로 변환하되, 헤딩 앞뒤는 제외
-                if (i > 0 and i < len(lines) - 1 and 
-                    not lines[i-1].startswith('<h2>') and 
-                    not lines[i+1].startswith('<h2>')):
-                    processed_lines.append('<br>')
+                # 일반 텍스트 처리
+                if in_list:
+                    processed_lines.append('</ul>')
+                    in_list = False
+                processed_lines.append(stripped_line)
+        
+        # 마지막에 리스트가 열려있으면 닫기
+        if in_list:
+            processed_lines.append('</ul>')
         
         return '\n'.join(processed_lines)
         

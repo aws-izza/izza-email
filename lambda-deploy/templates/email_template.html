@@ -7,7 +7,7 @@
     <title>산업단지 뉴스레터</title>
     <style>
         body {
-            font-family: 'Malgun Gothic', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             line-height: 1.6;
             color: #333;
             max-width: 600px;
@@ -19,12 +19,17 @@
         .container {
             background-color: white;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 24px;
         }
 
         .header {
-            background-color: #2c5aa0;
+            background-color: #4caf50;
             color: white;
             padding: 20px;
             border-radius: 8px;
@@ -42,11 +47,11 @@
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
-            border-left: 4px solid #2c5aa0;
+            border-left: 4px solid #4caf50;
         }
 
         .notice-info h2 {
-            color: #2c5aa0;
+            color: #4caf50;
             margin-top: 0;
             font-size: 18px;
         }
@@ -69,7 +74,7 @@
         }
 
         .analysis h2 {
-            color: #2c5aa0;
+            color: #4caf50;
             font-size: 16px;
             margin: 20px 0 10px 0;
             padding-bottom: 5px;
@@ -84,6 +89,16 @@
             margin: 10px 0;
         }
 
+        .analysis ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .analysis li {
+            margin: 5px 0;
+            line-height: 1.5;
+        }
+
         .footer {
             background-color: #f8f9fa;
             padding: 15px;
@@ -95,7 +110,7 @@
 
         .pdf-link {
             display: inline-block;
-            background-color: #dc3545;
+            background-color: #4caf50;
             color: white;
             padding: 8px 16px;
             text-decoration: none;
@@ -104,7 +119,7 @@
         }
 
         .pdf-link:hover {
-            background-color: #c82333;
+            background-color: #45a049;
         }
 
         @media (max-width: 600px) {
@@ -121,6 +136,22 @@
 
 <body>
     <div class="container">
+        <div class="logo-container">
+            <svg width="72" height="32" viewBox="0 0 72 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M66.0889 27.9322C63.8393 27.9322 61.4918 28.0626 59.3073 27.9648C57.1228 27.867 55.1666 27.6387 53.7646 26.8888C52.33 26.139 51.4497 24.9326 51.4497 22.8785C51.4497 20.5637 52.493 19.0313 54.2211 17.9879C55.9491 16.9772 58.3944 16.4881 61.1657 16.2599C59.829 15.184 57.2532 15.1514 54.1232 15.8361C53.569 15.9665 53.3081 15.8035 53.2755 15.347L53.0799 11.1737C53.0473 10.5542 53.2429 10.3586 53.7646 10.2608C55.623 9.96732 57.7423 9.70649 59.7311 9.73909C61.72 9.8369 63.6436 10.2282 65.0456 11.3041C66.4476 12.38 67.3605 14.108 67.4583 16.8468L67.7192 26.2042C67.7518 27.5083 67.3605 27.9322 66.0889 27.9322ZM57.8075 22.5525C57.8075 23.2046 58.2966 23.6284 59.0465 23.7915C59.7964 24.0197 60.7745 23.9871 61.72 23.8893L61.557 20.6615C59.0791 20.9223 57.8075 21.3462 57.8075 22.5525Z"
+                    fill="#4caf50"></path>
+                <path
+                    d="M49.535 6.44531L40.7971 21.378H48.2961C49.1764 21.378 49.6002 21.6714 49.6002 22.5843V26.7251C49.6002 27.638 49.1764 27.964 48.2961 27.964H32.1896C30.3964 27.964 30.2008 26.8229 30.9507 25.5187L39.6886 10.5534H31.5702C30.6573 10.5534 30.2334 10.26 30.2334 9.34707V5.20635C30.2334 4.29344 30.6573 4 31.5702 4H48.2961C50.0241 4 50.3175 5.14114 49.535 6.44531Z"
+                    fill="#4caf50"></path>
+                <path
+                    d="M27.3383 27.9646H14.8835C13.0903 27.9646 12.8947 26.7908 13.6446 25.5193L18.959 15.8685H14.1336C13.2207 15.8685 12.7969 15.575 12.7969 14.6621V10.9778C12.7969 10.0975 13.2207 9.77148 14.1336 9.77148H27.0449C28.7729 9.77148 29.0663 10.9126 28.2838 12.2168L22.8715 21.9002H27.3383C28.2512 21.9002 28.6751 22.1936 28.6751 23.1066V26.7256C28.6751 27.6385 28.2512 27.9646 27.3383 27.9646Z"
+                    fill="#4caf50"></path>
+                <path
+                    d="M4.32604 26.4968L4 5.46719C4 4.32604 4.32604 4 5.23896 4H9.93395C10.8795 4 11.1403 4.32604 11.1729 5.46719L11.4989 26.4968C11.5315 27.638 11.2055 27.964 10.26 27.964H5.565C4.65208 27.964 4.35865 27.638 4.32604 26.4968Z"
+                    fill="#4caf50"></path>
+            </svg>
+        </div>
         <div class="header">
             <h1>📰 산업단지 뉴스레터</h1>
             <p>{{ notice_data.고시일자 }}자</p>
@@ -151,11 +182,6 @@
             <h3>📄 참고 정보</h3>
             <p><strong>고시일자:</strong> {{ notice_data.고시일자 }}</p>
             <p><strong>고시번호:</strong> {{ notice_data.고시번호 }}</p>
-            {% if notice_data.pdf_link %}
-            <a href="{{ base_url }}{{ notice_data.pdf_link }}" class="pdf-link" target="_blank">
-                📄 PDF 문서 바로가기
-            </a>
-            {% endif %}
         </div>
     </div>
 </body>
