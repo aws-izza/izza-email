@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Subscriptions</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: auto; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+        header { padding: 20px; background-color: #4caf50; color: white; }
+        header h1 { margin: 0; font-size: 24px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f5f5f5; font-weight: 600; }
+        .delete-btn { background: #c62828; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+        .delete-btn:hover { background: #b71c1c; }
+        .status { margin: 20px; padding: 15px; border-radius: 6px; display: none; }
+        .status.success { background-color: #e8f5e9; color: #2e7d32; }
+        .status.error { background-color: #ffebee; color: #c62828; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Subscription Management</h1>
+    </header>
+
+    <div id="status" class="status"></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Company</th>
+                <th>Subscription</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="subscriptions-table-body">
+            <!-- Data will be loaded here -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        loadSubscriptions();
+    });
+
+    function showStatus(message, isError = false) {
+        const statusEl = document.getElementById('status');
+        statusEl.textContent = message;
+        statusEl.className = `status ${isError ? 'error' : 'success'}`;
+        statusEl.style.display = 'block';
+        setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
+    }
+
+    function loadSubscriptions() {
+        fetch('/api/subscriptions')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('subscriptions-table-body');
+                tableBody.innerHTML = ''; // Clear existing data
+                data.forEach(sub => {
+                    const row = `
+                        <tr>
+                            <td>${sub.id}</td>
+                            <td>${sub.email}</td>
+                            <td>${sub.company}</td>
+                            <td>${sub.subscription_type}</td>
+                            <td>
+                                <button class="delete-btn" onclick="deleteSubscription(${sub.id})">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            })
+            .catch(error => {
+                console.error('Error loading subscriptions:', error);
+                showStatus('Failed to load subscriptions.', true);
+            });
+    }
+
+    function deleteSubscription(id) {
+        if (!confirm(`Are you sure you want to delete subscription #${id}?`)) {
+            return;
+        }
+
+        fetch(`/api/subscriptions/${id}`, {
+            method: 'DELETE'
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Deletion failed.');
+            }
+        })
+        .then(data => {
+            showStatus(data.message);
+            loadSubscriptions(); // Refresh the table
+        })
+        .catch(error => {
+            console.error('Error deleting subscription:', error);
+            showStatus('Failed to delete subscription.', true);
+        });
+    }
+</script>
+
+</body>
+</html>

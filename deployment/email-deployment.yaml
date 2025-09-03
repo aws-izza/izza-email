@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: email-registration-deployment
+  namespace: email-services
+  labels:
+    app: email-registration
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: email-registration
+  template:
+    metadata:
+      labels:
+        app: email-registration
+    spec:
+      containers:
+      - name: email-registration-app
+        image: YOUR_DOCKER_IMAGE:latest # <-- IMPORTANT: Replace with your actual image name and tag
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DB_HOST
+          # The FQDN for the service within the cluster
+          value: "mariadb-nlb-service.email-services.svc.cluster.local"
+        - name: DB_USER
+          value: "root"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-secret
+              key: ROOT_PASSWORD
+        - name: DB_NAME
+          value: "email_subscriptions"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: email-registration-service
+  namespace: email-services
+spec:
+  selector:
+    app: email-registration
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: ClusterIP

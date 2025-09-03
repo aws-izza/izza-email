@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기업 이메일 등록</title>
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f5f5f5; /* From --secondary-color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333; /* From --text-primary */
+        }
+
+        /* Registration Card Container */
+        .registration-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 20px;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .logo-container svg {
+            width: 90px;
+            height: auto;
+        }
+
+        .registration-card {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* From --shadow */
+            border-radius: 8px; /* From --border-radius */
+            overflow: hidden;
+        }
+
+        /* Card Header */
+        .card-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid #ddd; /* From --border-color */
+            background-color: #f5f5f5; /* From --secondary-color */
+        }
+
+        .card-header h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+            color: #333; /* From --text-primary */
+        }
+        
+        .card-header p {
+            margin: 8px 0 0;
+            font-size: 14px;
+            color: #666; /* From --text-secondary */
+        }
+
+        /* Form Content */
+        .card-content {
+            padding: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: #333; /* From --text-primary */
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd; /* From --border-color */
+            border-radius: 8px; /* From --border-radius */
+            font-size: 14px;
+            color: #333; /* From --text-primary */
+            background-color: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box; /* Ensures padding doesn't affect width */
+        }
+
+        .form-input::placeholder {
+            color: #999;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4caf50; /* From --primary-color */
+            box-shadow: none;
+        }
+
+        /* Subscription Options Styles */
+        .subscription-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        /* Checkbox Styles */
+        .terms-checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 24px;
+        }
+
+        .checkbox-input {
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: #4caf50; /* From --primary-color */
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: #666; /* From --text-secondary */
+        }
+
+        .checkbox-label a {
+            color: #4caf50; /* From --primary-color */
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .checkbox-label a:hover {
+            text-decoration: underline;
+        }
+
+        /* Submit Button */
+        .submit-button {
+            width: 100%;
+            padding: 12px 24px;
+            background-color: #4caf50; /* From --primary-color */
+            border: none;
+            border-radius: 8px; /* From --border-radius */
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .submit-button:hover {
+            background-color: #45a049; /* From --primary-dark */
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .submit-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .submit-button:disabled:hover {
+             background-color: #ccc;
+        }
+
+        /* Feedback Messages */
+        .feedback-message {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none; /* Hidden by default */
+        }
+
+        .feedback-message.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .feedback-message.error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="registration-container">
+        <div class="logo-container">
+            <svg width="72" height="32" viewBox="0 0 72 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M66.0889 27.9322C63.8393 27.9322 61.4918 28.0626 59.3073 27.9648C57.1228 27.867 55.1666 27.6387 53.7646 26.8888C52.33 26.139 51.4497 24.9326 51.4497 22.8785C51.4497 20.5637 52.493 19.0313 54.2211 17.9879C55.9491 16.9772 58.3944 16.4881 61.1657 16.2599C59.829 15.184 57.2532 15.1514 54.1232 15.8361C53.569 15.9665 53.3081 15.8035 53.2755 15.347L53.0799 11.1737C53.0473 10.5542 53.2429 10.3586 53.7646 10.2608C55.623 9.96732 57.7423 9.70649 59.7311 9.73909C61.72 9.8369 63.6436 10.2282 65.0456 11.3041C66.4476 12.38 67.3605 14.108 67.4583 16.8468L67.7192 26.2042C67.7518 27.5083 67.3605 27.9322 66.0889 27.9322ZM57.8075 22.5525C57.8075 23.2046 58.2966 23.6284 59.0465 23.7915C59.7964 24.0197 60.7745 23.9871 61.72 23.8893L61.557 20.6615C59.0791 20.9223 57.8075 21.3462 57.8075 22.5525Z" fill="#4caf50"></path>
+                <path d="M49.535 6.44531L40.7971 21.378H48.2961C49.1764 21.378 49.6002 21.6714 49.6002 22.5843V26.7251C49.6002 27.638 49.1764 27.964 48.2961 27.964H32.1896C30.3964 27.964 30.2008 26.8229 30.9507 25.5187L39.6886 10.5534H31.5702C30.6573 10.5534 30.2334 10.26 30.2334 9.34707V5.20635C30.2334 4.29344 30.6573 4 31.5702 4H48.2961C50.0241 4 50.3175 5.14114 49.535 6.44531Z" fill="#4caf50"></path>
+                <path d="M27.3383 27.9646H14.8835C13.0903 27.9646 12.8947 26.7908 13.6446 25.5193L18.959 15.8685H14.1336C13.2207 15.8685 12.7969 15.575 12.7969 14.6621V10.9778C12.7969 10.0975 13.2207 9.77148 14.1336 9.77148H27.0449C28.7729 9.77148 29.0663 10.9126 28.2838 12.2168L22.8715 21.9002H27.3383C28.2512 21.9002 28.6751 22.1936 28.6751 23.1066V26.7256C28.6751 27.6385 28.2512 27.9646 27.3383 27.9646Z" fill="#4caf50"></path>
+                <path d="M4.32604 26.4968L4 5.46719C4 4.32604 4.32604 4 5.23896 4H9.93395C10.8795 4 11.1403 4.32604 11.1729 5.46719L11.4989 26.4968C11.5315 27.638 11.2055 27.964 10.26 27.964H5.565C4.65208 27.964 4.35865 27.638 4.32604 26.4968Z" fill="#4caf50"></path>
+            </svg>
+        </div>
+        <div class="registration-card">
+            <div class="card-header">
+                <h1>뉴스레터 구독</h1>
+                <p>최신 소식을 받아보려면 정보를 입력하세요.</p>
+            </div>
+            <div class="card-content">
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="email" class="form-label">이메일 주소</label>
+                        <input type="email" id="email" name="email" class="form-input" placeholder="email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company" class="form-label">회사명</label>
+                        <input type="text" id="company" name="company" class="form-input" placeholder="회사명을 입력하세요" required>
+                    </div>
+
+                    <!-- Subscription Information Section -->
+                    <div class="form-group">
+                        <label class="form-label">구독 정보</label>
+                        <div class="subscription-options">
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="source1" name="subscription" value="industrial_complex" class="checkbox-input">
+                                <label for="source1" class="checkbox-label">산업단지 공고</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="source2" name="subscription" value="support_policy" class="checkbox-input">
+                                <label for="source2" class="checkbox-label">지원 정책</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="terms-checkbox-group">
+                        <input type="checkbox" id="terms" name="terms" class="checkbox-input" required>
+                        <label for="terms" class="checkbox-label">
+                            <a href="#">이용약관</a> 및 <a href="#">개인정보처리방침</a>에 동의합니다.
+                        </label>
+                    </div>
+                    
+                    <div id="feedback" class="feedback-message"></div>
+
+                    <button type="submit" class="submit-button">구독하기</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const email = form.email.value;
+            const company = form.company.value;
+            const terms = form.terms.checked;
+            const subscriptions = Array.from(form.querySelectorAll('input[name="subscription"]:checked')).map(el => el.value);
+            const feedbackEl = document.getElementById('feedback');
+            
+            feedbackEl.style.display = 'none';
+            feedbackEl.textContent = '';
+            feedbackEl.className = 'feedback-message';
+
+            if (!email || !company) {
+                feedbackEl.textContent = '모든 필드를 입력해주세요.';
+                feedbackEl.classList.add('error');
+                feedbackEl.style.display = 'block';
+                return;
+            }
+            
+            if (subscriptions.length === 0) {
+                feedbackEl.textContent = '하나 이상의 구독 정보를 선택해주세요.';
+                feedbackEl.classList.add('error');
+                feedbackEl.style.display = 'block';
+                return;
+            }
+
+            if (!terms) {
+                feedbackEl.textContent = '이용약관에 동의해야 합니다.';
+                feedbackEl.classList.add('error');
+                feedbackEl.style.display = 'block';
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('company', company);
+            subscriptions.forEach(sub => formData.append('subscription', sub));
+            formData.append('terms', terms);
+
+            fetch('/register', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    feedbackEl.textContent = '성공적으로 등록되었습니다! 최신 소식을 보내드리겠습니다.';
+                    feedbackEl.classList.add('success');
+                    feedbackEl.style.display = 'block';
+                    form.reset();
+                } else {
+                    throw new Error(data.detail || 'An unknown error occurred.');
+                }
+            })
+            .catch(error => {
+                feedbackEl.textContent = '등록 중 오류가 발생했습니다: ' + error.message;
+                feedbackEl.classList.add('error');
+                feedbackEl.style.display = 'block';
+            });
+        });
+    </script>
+
+</body>
+</html>
+
